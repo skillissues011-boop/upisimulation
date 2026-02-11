@@ -658,7 +658,7 @@
                                         <div id="dot-${i}" class="w-4 h-4 rounded-full border-2 border-gray-300 bg-white transition-all duration-200"></div>
                                     `).join('')}
                                 </div>
-                                <p class="text-xs text-gray-400 mt-4">(Try: 1234 or 0000)</p>
+                                <p class="text-xs text-gray-400 mt-4">(Try: 7777)</p>
                             </div>
 
                             <!-- Secure Keypad -->
@@ -701,12 +701,14 @@
             `;
             
             setTimeout(() => {
-                const isSuccess = state.pin === '1234' || state.pin === '0000';
+                console.log('Entered PIN:', state.pin);
+                const isSuccess = state.pin === '7777';
+                console.log('PIN Check:', isSuccess);
                 if(isSuccess) {
                     processTransaction();
                     navigate('success');
                 } else {
-                    showToast('Wrong PIN! Try 1234 or 0000', 'error');
+                    showToast('Wrong PIN! Try 7777', 'error');
                     state.pin = '';
                     navigate('pin');
                 }
@@ -840,7 +842,10 @@
 
         function navigate(screenId) {
             state.screen = screenId;
-            state.pin = '';
+            // Don't reset PIN when going to processing screen
+            if (screenId !== 'processing') {
+                state.pin = '';
+            }
             closeModal();
             
             if (screenId === 'home') renderHome();
